@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../database");
 const KegiatanSub1Jafung = require("./kegiatanSub1Jafung");
-const Jafung = require("./jafung"); 
+const Jafung = require("./jafung");
 
 const KegiatanSub2Jafung = db.define(
   "KegiatanSub2Jafung",
@@ -69,11 +69,11 @@ KegiatanSub2Jafung.belongsTo(KegiatanSub1Jafung, {
 });
 
 Jafung.hasMany(KegiatanSub2Jafung, {
-  foreignKey : "kode_jafung",
+  foreignKey: "kode_jafung",
 })
 
 KegiatanSub2Jafung.belongsTo(Jafung, {
-  foreignKey : "kode_jafung"
+  foreignKey: "kode_jafung"
 })
 
 

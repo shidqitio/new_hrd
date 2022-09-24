@@ -9,6 +9,10 @@ const TJabatanFungsional = db.define(
       primaryKey: true,
       allowNull: false,
     },
+    kode_pegawai: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
     kode_jafung_pangkat: {
       type: DataTypes.STRING(8),
       primaryKey: true,

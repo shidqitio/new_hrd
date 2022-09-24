@@ -9,6 +9,10 @@ const TOrganisasi = db.define(
       primaryKey: true,
       allowNull: false,
     },
+    kode_pegawai: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
     kode_organisasi: {
       type: DataTypes.INTEGER(9),
       primaryKey: true,

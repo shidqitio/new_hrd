@@ -45,11 +45,11 @@ const Jafung = db.define(
 
 
 JenisFungsional.hasMany(Jafung, {
-  foreignKey : "kode_jenis_fungsional",
+  foreignKey: "kode_jenis_fungsional",
 })
 
 Jafung.belongsTo(JenisFungsional, {
-  foreignKey : "kode_jenis_fungsional"
+  foreignKey: "kode_jenis_fungsional"
 })
 
 module.exports = Jafung;

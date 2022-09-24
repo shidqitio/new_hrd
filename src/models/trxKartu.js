@@ -1,63 +1,67 @@
-const {DataTypes} = require("sequelize");
+const { DataTypes } = require("sequelize");
 const db = require("../database");
 const Pegawai = require("./pegawai");
 const Kartu = require("./kartu")
 
 const TrxKartu = db.define(
-    "TrxKartu", 
+    "TrxKartu",
     {
-        nip : {
-            type : DataTypes.STRING(20), 
-            primaryKey : true, 
-            allowNull : false,
-        }, 
-        kode_kartu : {
-            type : DataTypes.STRING(2), 
-            primaryKey : true ,
-            allowNull : false,
-        }, 
-        nomor_kartu : {
-            type : DataTypes.STRING(20), 
-            allowNull : false,
-        }, 
+        nip: {
+            type: DataTypes.STRING(20),
+            primaryKey: true,
+            allowNull: false,
+        },
+        kode_pegawai: {
+            type: DataTypes.STRING(20),
+            allowNull: true,
+        },
+        kode_kartu: {
+            type: DataTypes.STRING(2),
+            primaryKey: true,
+            allowNull: false,
+        },
+        nomor_kartu: {
+            type: DataTypes.STRING(20),
+            allowNull: false,
+        },
         ucr: {
             type: DataTypes.STRING(100),
             allowNull: true,
-          },
-          uch: {
+        },
+        uch: {
             type: DataTypes.STRING(100),
             allowNull: true,
-          },
-          udcr: {
+        },
+        udcr: {
             type: DataTypes.DATE,
             allowNull: true,
-          },
-          udch: {
+        },
+        udch: {
             type: DataTypes.DATE,
             allowNull: true,
-          },
-    }, 
+        },
+    },
     {
-        tableName : "trx_kartu", 
-        createdAt : "udcr", 
-        updatedAt : "udch",
+        tableName: "trx_kartu",
+        createdAt: "udcr",
+        updatedAt: "udch",
     },
 )
 
 Pegawai.hasMany(TrxKartu, {
-    foreignKey : "nip",
+    foreignKey: "nip",
 })
 
 TrxKartu.belongsTo(Pegawai, {
-    foreignKey : "nip",
+    foreignKey: "nip",
 })
 
 Kartu.hasMany(TrxKartu, {
-    foreignKey : "kode_kartu",
+    foreignKey: "kode_kartu",
 })
 
 TrxKartu.belongsTo(Kartu, {
-    foreignKey : "kode_kartu",
+    foreignKey: "kode_kartu",
 });
 
 module.exports = TrxKartu;

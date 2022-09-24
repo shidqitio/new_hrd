@@ -4,64 +4,68 @@ const Pegawai = require("./pegawai")
 const Unit = require("./unit")
 
 const TrxUnitKerjaPegawai = db.define(
-    "TrxUnitKerjaPegawai", 
+    "TrxUnitKerjaPegawai",
     {
-        kode_unit : {
-            type: DataTypes.STRING(16), 
-            primaryKey : true, 
-            allowNull : false,
-        }, 
-        nip : {
-            type : DataTypes.STRING(20), 
-            primaryKey : true, 
-            allowNull : false,
-        }, 
-        tanggal_mulai : {
-            type : DataTypes.STRING(4), 
-            allowNull : true,
-        }, 
-        tanggal_akhir : {
-            type : DataTypes.STRING(4), 
-            allowNull : true,
+        kode_unit: {
+            type: DataTypes.STRING(16),
+            primaryKey: true,
+            allowNull: false,
+        },
+        nip: {
+            type: DataTypes.STRING(20),
+            primaryKey: true,
+            allowNull: false,
+        },
+        kode_pegawai: {
+            type: DataTypes.STRING(20),
+            allowNull: true,
+        },
+        tanggal_mulai: {
+            type: DataTypes.STRING(4),
+            allowNull: true,
+        },
+        tanggal_akhir: {
+            type: DataTypes.STRING(4),
+            allowNull: true,
         },
         ucr: {
             type: DataTypes.STRING(100),
             allowNull: true,
-          },
-          uch: {
+        },
+        uch: {
             type: DataTypes.STRING(100),
             allowNull: true,
-          },
-          udcr: {
+        },
+        udcr: {
             type: DataTypes.DATE,
             allowNull: true,
-          },
-          udch: {
+        },
+        udch: {
             type: DataTypes.DATE,
             allowNull: true,
-          },
+        },
     },
     {
-        tableName : "trx_unit_kerja_pegawai", 
-        createdAt : "udcr", 
-        updatedAt : "udch",
+        tableName: "trx_unit_kerja_pegawai",
+        createdAt: "udcr",
+        updatedAt: "udch",
     }
 );
 
 Pegawai.hasMany(TrxUnitKerjaPegawai, {
-    foreignKey : "nip",
+    foreignKey: "nip",
 })
 
 TrxUnitKerjaPegawai.belongsTo(Pegawai, {
-    foreignKey : "nip"
+    foreignKey: "nip"
 })
 
 Unit.hasMany(TrxUnitKerjaPegawai, {
-    foreignKey : "kode_unit",
+    foreignKey: "kode_unit",
 })
 
 TrxUnitKerjaPegawai.belongsTo(Unit, {
-    foreignKey : "kode_unit"
+    foreignKey: "kode_unit"
 })
 
 module.exports = TrxUnitKerjaPegawai;

@@ -9,6 +9,10 @@ const TPelatihanDiklat = db.define(
       primaryKey: true,
       allowNull: false,
     },
+    kode_pegawai: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
     nama_jenis_dokumen: {
       type: DataTypes.STRING(5),
       primaryKey: true,

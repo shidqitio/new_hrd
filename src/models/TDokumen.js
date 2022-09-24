@@ -9,6 +9,10 @@ const TDokumen = db.define(
       primaryKey: true,
       allowNull: false,
     },
+    kode_pegawai: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
     kode_jenis_dokumen: {
       type: DataTypes.STRING(5),
       primaryKey: true,

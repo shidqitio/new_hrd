@@ -9,6 +9,10 @@ const TKeluarga = db.define(
       primaryKey: true,
       allowNull: false,
     },
+    kode_pegawai: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
     kode_keluarga: {
       type: DataTypes.STRING(2),
       primaryKey: true,

@@ -9,6 +9,10 @@ const TKoleksiAngkaKreditDetail = db.define(
       primaryKey: true,
       allowNull: false,
     },
+    kode_pegawai: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
     koleksi_ke: {
       type: DataTypes.INTEGER(3),
       unique: true,

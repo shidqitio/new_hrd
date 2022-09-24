@@ -9,6 +9,10 @@ const THukuman = db.define(
       primaryKey: true,
       allowNull: false,
     },
+    kode_pegawai: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
     kode_hukuman: {
       type: DataTypes.STRING(2),
       allowNull: false,

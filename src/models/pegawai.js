@@ -10,6 +10,10 @@ const Pegawai = db.define(
       primaryKey: true,
       allowNull: false,
     },
+    kode_pegawai: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
     nama_pegawai: {
       type: DataTypes.STRING(100),
       allowNull: false,
@@ -63,9 +67,9 @@ const Pegawai = db.define(
       type: DataTypes.ENUM("Aktif", "Pensiun", "Diberhentikan", "Meninggal"),
       allowNull: false,
     },
-    foto_pegawai : {
-      type: DataTypes.STRING(255), 
-      allowNull : true
+    foto_pegawai: {
+      type: DataTypes.STRING(255),
+      allowNull: true
     },
     ucr: {
       type: DataTypes.STRING(100),

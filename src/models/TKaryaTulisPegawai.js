@@ -9,6 +9,10 @@ const TKaryaTulisPegawai = db.define(
       primaryKey: true,
       allowNull: false,
     },
+    kode_pegawai: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
     kode_jenis_karya_tulis: {
       type: DataTypes.STRING(2),
       primaryKey: true,
