@@ -6,14 +6,10 @@ const Kartu = require("./kartu")
 const TrxKartu = db.define(
     "TrxKartu",
     {
-        nip: {
-            type: DataTypes.STRING(20),
-            primaryKey: true,
-            allowNull: false,
-        },
         kode_pegawai: {
-            type: DataTypes.STRING(20),
-            allowNull: true,
+            type: DataTypes.STRING(9),
+            allowNull: false,
+            primaryKey : true
         },
         kode_kartu: {
             type: DataTypes.STRING(2),
@@ -49,11 +45,11 @@ const TrxKartu = db.define(
 )
 
 Pegawai.hasMany(TrxKartu, {
-    foreignKey: "nip",
+    foreignKey: "kode_pegawai",
 })
 
 TrxKartu.belongsTo(Pegawai, {
-    foreignKey: "nip",
+    foreignKey: "kode_pegawai",
 })
 
 Kartu.hasMany(TrxKartu, {

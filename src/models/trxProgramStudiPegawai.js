@@ -8,14 +8,10 @@ const Jurusan = require("./jurusan");
 const TrxProgramStudiPegawai = db.define(
     "TrxProgramStudiPegawai",
     {
-        nip: {
-            type: DataTypes.STRING(20),
-            primaryKey: true,
-            allowNull: false
-        },
         kode_pegawai: {
-            type: DataTypes.STRING(20),
-            allowNull: true,
+            type: DataTypes.STRING(9),
+            allowNull: false,
+            primaryKey : true
         },
         kode_fakultas: {
             type: DataTypes.STRING(1),
@@ -69,11 +65,11 @@ const TrxProgramStudiPegawai = db.define(
 )
 
 Pegawai.hasMany(TrxProgramStudiPegawai, {
-    foreignKey: "nip",
+    foreignKey: "kode_pegawai",
 })
 
 TrxProgramStudiPegawai.belongsTo(Pegawai, {
-    foreignKey: "nip"
+    foreignKey: "kode_pegawai"
 })
 
 Fakultas.hasMany(TrxProgramStudiPegawai, {

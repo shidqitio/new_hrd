@@ -13,15 +13,25 @@ const Pegawai = db.define(
     kode_pegawai: {
       type: DataTypes.STRING(9),
       allowNull: false,
+      primaryKey : true
     },
     nama_pegawai: {
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    nidn: {
-      type: DataTypes.STRING(10),
+    kode_anggota_fungsional: {
+      type: DataTypes.STRING(2),
       unique: true,
       allowNull: false,
+    },
+    kode_anggota_fungsional: {
+      type: DataTypes.STRING(20),
+      unique: true,
+      allowNull: false,
+    },
+    kode_jenis_pegawai : {
+      type : DataTypes.STRING(2), 
+      allowNull : true
     },
     tempat_lahir: {
       type: DataTypes.STRING(100),

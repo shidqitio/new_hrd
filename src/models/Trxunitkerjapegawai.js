@@ -11,14 +11,10 @@ const TrxUnitKerjaPegawai = db.define(
             primaryKey: true,
             allowNull: false,
         },
-        nip: {
-            type: DataTypes.STRING(20),
-            primaryKey: true,
-            allowNull: false,
-        },
         kode_pegawai: {
-            type: DataTypes.STRING(20),
-            allowNull: true,
+            type: DataTypes.STRING(9),
+            allowNull: false,
+            primaryKey : true
         },
         tanggal_mulai: {
             type: DataTypes.STRING(4),
@@ -53,11 +49,11 @@ const TrxUnitKerjaPegawai = db.define(
 );
 
 Pegawai.hasMany(TrxUnitKerjaPegawai, {
-    foreignKey: "nip",
+    foreignKey: "kode_pegawai",
 })
 
 TrxUnitKerjaPegawai.belongsTo(Pegawai, {
-    foreignKey: "nip"
+    foreignKey: "kode_pegawai"
 })
 
 Unit.hasMany(TrxUnitKerjaPegawai, {
