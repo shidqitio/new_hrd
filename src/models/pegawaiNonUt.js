@@ -10,8 +10,8 @@ const PegawaiNonUT = db.define(
             allowNull: false,
         },
         kode_pegawai: {
-            type: DataTypes.STRING(20),
-            allowNull: true,
+            type: DataTypes.STRING(9),
+            allowNull: false,
         },
         nama_pegawai: {
             type: DataTypes.STRING(100),

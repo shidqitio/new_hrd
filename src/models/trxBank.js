@@ -12,14 +12,10 @@ const TrxBank = db.define(
             primaryKey: true,
             allowNull: false,
         },
-        nip: {
-            type: DataTypes.STRING(20),
+        kode_pegawai: {
+            type: DataTypes.STRING(9),
             primaryKey: true,
             allowNull: false,
-        },
-        kode_pegawai: {
-            type: DataTypes.STRING(20),
-            allowNull: true,
         },
         no_rekening: {
             type: DataTypes.STRING(50),
@@ -50,11 +46,11 @@ const TrxBank = db.define(
 );
 
 Pegawai.hasMany(TrxBank, {
-    foreignKey: "nip",
+    foreignKey: "kode_pegawai",
 })
 
 TrxBank.belongsTo(Pegawai, {
-    foreignKey: "nip",
+    foreignKey: "kode_pegawai",
 })
 
 Bank.hasMany(TrxBank, {

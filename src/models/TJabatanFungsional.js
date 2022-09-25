@@ -4,14 +4,10 @@ const db = require("../database");
 const TJabatanFungsional = db.define(
   "TJabatanFungsional",
   {
-    nip: {
-      type: DataTypes.STRING(20),
+    kode_pegawai: {
+      type: DataTypes.STRING(9),
       primaryKey: true,
       allowNull: false,
-    },
-    kode_pegawai: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
     },
     kode_jafung_pangkat: {
       type: DataTypes.STRING(8),
@@ -61,7 +57,7 @@ const TJabatanFungsional = db.define(
     },
   },
   {
-    tableName: "t_jabatan_fungsional",
+    tableName: "trx_jabatan_fungsional",
     createdAt: "udcr",
     updatedAt: "udch",
   }

@@ -4,14 +4,10 @@ const db = require("../database");
 const TPelatihanDiklat = db.define(
   "TPelatihanDiklat",
   {
-    nip: {
-      type: DataTypes.STRING(20),
+    kode_pegawai: {
+      type: DataTypes.STRING(9),
       primaryKey: true,
       allowNull: false,
-    },
-    kode_pegawai: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
     },
     nama_jenis_dokumen: {
       type: DataTypes.STRING(5),

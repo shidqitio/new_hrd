@@ -4,14 +4,10 @@ const db = require("../database");
 const THukuman = db.define(
   "THukuman",
   {
-    nip: {
-      type: DataTypes.STRING(20),
+    kode_pegawai: {
+      type: DataTypes.STRING(9),
       primaryKey: true,
       allowNull: false,
-    },
-    kode_pegawai: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
     },
     kode_hukuman: {
       type: DataTypes.STRING(2),
@@ -56,7 +52,7 @@ const THukuman = db.define(
     },
   },
   {
-    tableName: "t_hukuman",
+    tableName: "trx_hukuman",
     createdAt: "udcr",
     updatedAt: "udch",
   }

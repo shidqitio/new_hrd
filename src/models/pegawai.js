@@ -11,8 +11,8 @@ const Pegawai = db.define(
       allowNull: false,
     },
     kode_pegawai: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
+      type: DataTypes.STRING(9),
+      allowNull: false,
     },
     nama_pegawai: {
       type: DataTypes.STRING(100),
@@ -60,11 +60,11 @@ const Pegawai = db.define(
       allowNull: false,
     },
     status_nikah: {
-      type: DataTypes.ENUM("Nikah", "Belum Nikah"),
+      type: DataTypes.ENUM('Nikah','Belum Nikah','Janda','Duda','Tidak Menikah','Relationship','Available'),
       allowNull: false,
     },
-    status_pegawai: {
-      type: DataTypes.ENUM("Aktif", "Pensiun", "Diberhentikan", "Meninggal"),
+    kode_status_aktivitas: {
+      type: DataTypes.INTEGER(11),
       allowNull: false,
     },
     foto_pegawai: {

@@ -8,14 +8,10 @@ const JafungPangkat = require("./jafungPangkat");
 const TrxJabatanFungsional = db.define(
     "TrxJabatanFungsional",
     {
-        nip: {
-            type: DataTypes.STRING(20),
+        kode_pegawai: {
+            type: DataTypes.STRING(9),
             primaryKey: true,
             allowNull: false,
-        },
-        kode_pegawai: {
-            type: DataTypes.STRING(20),
-            allowNull: true,
         },
         kode_jenis_fungsional: {
             type: DataTypes.STRING(2),
@@ -71,11 +67,11 @@ const TrxJabatanFungsional = db.define(
 );
 
 Pegawai.hasMany(TrxJabatanFungsional, {
-    foreignKey: "nip",
+    foreignKey: "kode_pegawai",
 })
 
 TrxJabatanFungsional.belongsTo(Pegawai, {
-    foreignKey: "nip",
+    foreignKey: "kode_pegawai",
 })
 
 JenisFungsional.hasMany(TrxJabatanFungsional, {

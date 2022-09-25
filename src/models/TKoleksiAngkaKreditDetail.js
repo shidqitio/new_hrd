@@ -4,14 +4,10 @@ const db = require("../database");
 const TKoleksiAngkaKreditDetail = db.define(
   "TKoleksiAngkaKreditDetail",
   {
-    nip: {
-      type: DataTypes.STRING(20),
+    kode_pegawai: {
+      type: DataTypes.STRING(9),
       primaryKey: true,
       allowNull: false,
-    },
-    kode_pegawai: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
     },
     koleksi_ke: {
       type: DataTypes.INTEGER(3),
@@ -65,7 +61,7 @@ const TKoleksiAngkaKreditDetail = db.define(
     },
   },
   {
-    tableName: "t_koleksi_angka_kredit_detail",
+    tableName: "trx_koleksi_angka_kredit_detail",
     createdAt: "udcr",
     updatedAt: "udch",
   }

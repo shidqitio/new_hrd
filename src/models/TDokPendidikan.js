@@ -4,14 +4,10 @@ const db = require("../database");
 const TDokPendidikan = db.define(
   "TDokPendidikan",
   {
-    nip: {
-      type: DataTypes.STRING(20),
+    kode_pegawai: {
+      type: DataTypes.STRING(9),
       primaryKey: true,
       allowNull: false,
-    },
-    kode_pegawai: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
     },
     kode_tingkat_pendidikan: {
       type: DataTypes.STRING(2),
@@ -48,7 +44,7 @@ const TDokPendidikan = db.define(
     },
   },
   {
-    tableName: "t_dok_pedidikan",
+    tableName: "trx_dok_pedidikan",
     createdAt: "udcr",
     updatedAt: "udch",
   }

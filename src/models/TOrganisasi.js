@@ -4,14 +4,10 @@ const db = require("../database");
 const TOrganisasi = db.define(
   "TOrganisasi",
   {
-    nip: {
-      type: DataTypes.STRING(20),
+    kode_pegawai: {
+      type: DataTypes.STRING(9),
       primaryKey: true,
       allowNull: false,
-    },
-    kode_pegawai: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
     },
     kode_organisasi: {
       type: DataTypes.INTEGER(9),
@@ -56,7 +52,7 @@ const TOrganisasi = db.define(
     },
   },
   {
-    tableName: "t_organisasi",
+    tableName: "trx_organisasi",
     createdAt: "udcr",
     updatedAt: "udch",
   }
