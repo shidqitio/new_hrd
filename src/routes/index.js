@@ -39,7 +39,7 @@ const trxanjabformeRouter = require("./trxAnjabFormE");
 const trxunitkerjaupbjjRouter = require("./trxUnitKerjaUpbjj");
 const trxanjabformeupbjjRouter = require("./trxAnjabFormEUpbjj")
 const subkelasRouter = require("./subKelas");
-
+const jenispegawaiRouter = require("./jenisPegawai")
 
 router.use("/agama", agamaRoutes);
 router.use("/fakultas", fakultasRoutes);
@@ -80,6 +80,7 @@ router.use("/trxanjabforme", trxanjabformeRouter);
 router.use("/trxunitkerjaupbjj", trxunitkerjaupbjjRouter);
 router.use("/trxanjabformeupbjj", trxanjabformeupbjjRouter)
 router.use("/subkelas", subkelasRouter)
+router.use("/jenis-pegawai", jenispegawaiRouter);
 
 
 
