@@ -63,19 +63,24 @@ exports.index = (req, res, next) => {
 };
 
 exports.store = (req, res, next) =>{
-    Pegawai.findOne({where : {nip : req.body.nip}})
+    Pegawai.findAll()
     .then((pegawai)=> {
-        if(pegawai){
-            const error = new Error("NIP Sudah Terdaftar");
-            error.statusCode = 422; 
-            throw error;
+        if(pegawai.length === 0 ){
+            kode_hasil = 1
         }
+        else{
+            let data = JSON.parse(JSON.stringify(pegawai));
+            let index = pegawai.length
+            const {kode_pegawai} = data[index - 1]
+            kode_hasil = kode_pegawai + 1
+        }
+        console.log("Tes :", kode_hasil)
         if(req.file){
             const filename = path.parse(req.file.filename).base;
             return Pegawai.create({
+                kode_pegawai : kode_hasil,
                 nip : req.body.nip, 
                 nama_pegawai : req.body.nama_pegawai,
-                nidn : req.body.nidn, 
                 tempat_lahir : req.body.tempat_lahir, 
                 tanggal_lahir : req.body.tanggal_lahir, 
                 jenis_kelamin : req.body.jenis_kelamin, 
@@ -86,6 +91,7 @@ exports.store = (req, res, next) =>{
                 alamat : req.body.alamat,
                 nomor_telp : req.body.nomor_telp, 
                 email : req.body.email, 
+                kode_anggota_fungsional : req.body.kode_anggota_fungsional,
                 status_nikah : req.body.status_nikah, 
                 status_pegawai : req.body.status_pegawai,
                 foto_pegawai : filename,
@@ -97,9 +103,9 @@ exports.store = (req, res, next) =>{
         }
         else{
             return Pegawai.create({
+                kode_pegawai : kode_hasil,
                 nip : req.body.nip, 
                 nama_pegawai : req.body.nama_pegawai,
-                nidn : req.body.nidn, 
                 tempat_lahir : req.body.tempat_lahir, 
                 tanggal_lahir : req.body.tanggal_lahir, 
                 jenis_kelamin : req.body.jenis_kelamin, 
@@ -110,6 +116,7 @@ exports.store = (req, res, next) =>{
                 alamat : req.body.alamat,
                 nomor_telp : req.body.nomor_telp, 
                 email : req.body.email, 
+                kode_anggota_fungsional : req.body.kode_anggota_fungsional,
                 status_nikah : req.body.status_nikah, 
                 status_pegawai : req.body.status_pegawai,
                 facebook : req.body.facebook, 

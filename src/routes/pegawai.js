@@ -58,12 +58,6 @@ router.post(
     check("nama_pegawai")
     .notEmpty()
     .withMessage("Nama Pegawai Harus Diisi"),
-    check("kode_jafung")
-    .notEmpty()
-    .withMessage("Kode_jafung Harus Diisi"),
-    check("nidn")
-    .isLength({max : 10})
-    .withMessage("NIDN Pegawai Maksimal 10 Karakter"),
     check("tempat_lahir")
     .isLength({max : 100})
     .withMessage("tempat_lahir Maksimal 100 Karakter"),
