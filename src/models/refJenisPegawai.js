@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize")
 const db = require("../database")
 
 const RefJenisPegawai = db.define(
-    "SubKelas",
+    "RefJenisPegawai",
     {
         kode_jenis_pegawai: {
             type: DataTypes.STRING(2),
@@ -31,7 +31,7 @@ const RefJenisPegawai = db.define(
         },
     },
     {
-        tableName: "ref_janis_pegawai",
+        tableName: "ref_jenis_pegawai",
         createdAt: "udcr",
         updatedAt: "udch",
     },
