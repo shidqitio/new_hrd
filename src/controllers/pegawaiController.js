@@ -13,6 +13,7 @@ const Jafung = require("../models/jafung");
 const JafungPangkat = require("../models/jafungPangkat");
 const TrxJabatanPengadaan = require("../models/trxJabatanPengadaan");
 const JabatanPengadaanDetail = require("../models/jabatanpengadaandetail");
+const {generateKode} = require("../helper/generatekode2")
 
 
 exports.index = (req, res, next) => {
@@ -63,17 +64,9 @@ exports.index = (req, res, next) => {
 };
 
 exports.store = (req, res, next) =>{
-    Pegawai.findAll()
-    .then((pegawai)=> {
-        if(pegawai.length === 0 ){
-            kode_hasil = 1
-        }
-        else{
-            let data = JSON.parse(JSON.stringify(pegawai));
-            let index = pegawai.length
-            const {kode_pegawai} = data[index - 1]
-            kode_hasil = kode_pegawai + 1
-        }
+    Pegawai.max("kode_pegawai")
+    .then((kode)=> {
+        const kode_hasil = generateKode(kode)
         console.log("Tes :", kode_hasil)
         if(req.file){
             const filename = path.parse(req.file.filename).base;
@@ -108,7 +101,13 @@ exports.store = (req, res, next) =>{
                 nama_pegawai : req.body.nama_pegawai,
                 tempat_lahir : req.body.tempat_lahir, 
                 tanggal_lahir : req.body.tanggal_lahir, 
-                jenis_kelamin : req.body.jenis_kelamin, 
+                jenis_kelamin : req.body.jenis_kelamin,
+                gelar_depan : req.body.gelar_depan, 
+                gelar_belakang : req.body.gelar_belakang,
+                kode_jenis_fungsional : req.body.kode_jenis_fungsional,
+                kode_anggota_fungsional : req.body.kode_anggota_fungsional,
+                kode_status_aktivitas : req.body.kode_status_aktivitas, 
+                kode_jenis_pegawai : req.body.kode_jenis_pegawai,
                 kode_agama : req.body.kode_agama, 
                 tmt_cpns : req.body.tmt_cpns, 
                 tmt_pns : req.body.tmt_pns,
@@ -116,7 +115,6 @@ exports.store = (req, res, next) =>{
                 alamat : req.body.alamat,
                 nomor_telp : req.body.nomor_telp, 
                 email : req.body.email, 
-                kode_anggota_fungsional : req.body.kode_anggota_fungsional,
                 status_nikah : req.body.status_nikah, 
                 status_pegawai : req.body.status_pegawai,
                 facebook : req.body.facebook, 

@@ -34,3 +34,4 @@ exports.generateKode = (kode) => {
 
     return kode_hasil;
 }
+
