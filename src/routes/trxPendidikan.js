@@ -13,13 +13,13 @@ const{
 
 router.get("/", index)
 
-router.get("/:nip/:kode_tingkat_pendidikan", show)
+router.get("/:kode_pegawai/:kode_tingkat_pendidikan", show)
 
 router.post("/", 
     [
-        check("nip")
+        check("kode_pegawai")
         .notEmpty()
-        .withMessage("Nip Tidak Boleh Kosong"),
+        .withMessage("kode pegawai Tidak Boleh Kosong"),
         check("kode_tingkat_pendidikan")
         .notEmpty()
         .withMessage("Tingkat Pendidikan Tidak Boleh Kosong"), 
@@ -43,11 +43,11 @@ router.post("/",
       store
 )
 
-router.put("/:nip/:kode_tingkat_pendidikan", 
+router.put("/:kode_pegawai/:kode_tingkat_pendidikan", 
 [
-    check("nip")
+    check("kode_pegawai")
     .notEmpty()
-    .withMessage("Nip Tidak Boleh Kosong"),
+    .withMessage("kode pegawai Tidak Boleh Kosong"),
     check("kode_tingkat_pendidikan")
     .notEmpty()
     .withMessage("Tingkat Pendidikan Tidak Boleh Kosong"), 
@@ -71,6 +71,6 @@ router.put("/:nip/:kode_tingkat_pendidikan",
   update
 )
 
-router.delete("/:nip/:kode_tingkat_pendidikan", destroy)
+router.delete("/:kode_pegawai/:kode_tingkat_pendidikan", destroy)
 
 module.exports = router

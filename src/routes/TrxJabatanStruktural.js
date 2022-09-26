@@ -13,12 +13,12 @@ const {check, validationResult} = require("express-validator")
 
 router.get("/", index)
 
-router.get("/:nip/:kode_jabatan_struktural/:periode", show)
+router.get("/:kode_pegawai/:kode_jabatan_struktural/:periode", show)
 
 router.post("/", store)
 
-router.put("/:nip/:kode_jabatan_struktural/:periode", update)
+router.put("/:kode_pegawai/:kode_jabatan_struktural/:periode", update)
 
-router.delete("/:nip/:kode_jabatan_struktural/:periode", destroy)
+router.delete("/:kode_pegawai/:kode_jabatan_struktural/:periode", destroy)
 
 module.exports = router

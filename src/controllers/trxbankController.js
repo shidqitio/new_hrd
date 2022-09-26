@@ -8,7 +8,7 @@ exports.index = (req, res, next) => {
         include : [
             {
                 model : Pegawai, 
-                attribute : ["nip", "nama_pegawai"]
+                attribute : ["kode_pegawai", "nip", "nama_pegawai"]
             },
             {
                 model : Bank, 
@@ -34,7 +34,7 @@ exports.index = (req, res, next) => {
 exports.store = (req, res, next) => {
     TrxBank.findOne({
         where : {
-            nip : req.body.nip, 
+            kode_pegawai : req.body.kode_pegawai, 
             kode_bank : req.body.kode_bank, 
         }
     })
@@ -46,7 +46,7 @@ exports.store = (req, res, next) => {
         }
         return TrxBank.create({
             kode_bank : req.body.kode_bank, 
-            nip : req.body.nip, 
+            nip : req.body.kode_pegawai, 
         });
     })
     .then((create) => {
@@ -69,7 +69,7 @@ exports.show = (req, res, next) => {
     TrxBank.findOne({
         where : {
             kode_bank : req.params.kode_bank, 
-            nip : req.params.nip, 
+            kode_pegawai : req.params.kode_pegawai, 
         }
     })
     .then((app) => {
@@ -99,7 +99,7 @@ exports.update = (req,res,next) => {
     }
     TrxBank.findOne({
         where : {
-            nip : req.params.nip, 
+            kode_pegawai : req.params.kode_pegawai, 
             kode_bank : req.params.kode_bank,
         }
     })
@@ -111,7 +111,7 @@ exports.update = (req,res,next) => {
         }
         return TrxBank.update(data, {
             where : {
-                nip : req.params.nip, 
+                kode_pegawai : req.params.kode_pegawai, 
                 kode_bank : req.params.kode_bank
             }
         })
@@ -135,7 +135,7 @@ exports.update = (req,res,next) => {
 exports.destroy = (req, res, next) => {
     TrxBank.findOne({
         where : {
-            nip : req.params.nip, 
+            kode_pegawai : req.params.kode_pegawai, 
             kode_bank : req.params.kode_bank,
         }
     })
@@ -147,7 +147,7 @@ exports.destroy = (req, res, next) => {
         }
         return TrxBank.destroy({
             where : {
-                nip : req.params.nip, 
+                kode_pegawai : req.params.kode_pegawai, 
                 kode_bank : req.params.kode_bank,
             }
         });

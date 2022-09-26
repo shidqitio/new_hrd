@@ -33,7 +33,7 @@ exports.show = (req, res, next) => {
     })
     .then((app) => {
         if(!app) {
-            const error = new Error("Nip Tidak Ada"); 
+            const error = new Error("Pegawai Tidak Ada"); 
             error.statusCode = 422; 
             throw error
         }

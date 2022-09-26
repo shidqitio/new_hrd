@@ -6,7 +6,7 @@ exports.index = (req, res, next) => {
         include : [
             {
                 model : Pegawai, 
-                attributes : ["nip","nama_pegawai"]
+                attributes : ["kode_pegawai", "nip","nama_pegawai"]
             }
         ]
     })
@@ -29,7 +29,7 @@ exports.index = (req, res, next) => {
 exports.store = (req, res, next) => {
     TrxJabatanStruktural.findOne({where : 
         {
-            nip : req.body.nip, 
+            kode_pegawai : req.body.kode_pegawai, 
             kode_jabatan_struktural : req.body.kode_jabatan_struktural, 
             periode : req.body.periode,    
         }
@@ -41,7 +41,7 @@ exports.store = (req, res, next) => {
             throw error;
         }
         return TrxJabatanStruktural.create({
-            nip : req.body.nip, 
+            kode_pegawai : req.body.kode_pegawai, 
             kode_jabatan_struktural : req.body.kode_jabatan_struktural, 
             periode : req.body.periode, 
             kelas : req.body.kelas, 
@@ -70,7 +70,7 @@ exports.store = (req, res, next) => {
 exports.show = (req,res, next) => {
     TrxJabatanStruktural.findOne({where : 
         {
-            nip : req.params.nip, 
+            kode_pegawai : req.params.kode_pegawai, 
             kode_jabatan_struktural : req.params.kode_jabatan_struktural, 
             periode : req.params.periode
 
@@ -78,7 +78,7 @@ exports.show = (req,res, next) => {
     })
     .then((trx) => {
         if(!trx) {
-            const error = new Error ("NIP Tidak Ada");
+            const error = new Error ("Pegawai Tidak Ada");
             error.statusCode = 422 ; 
             throw error;
         }
@@ -106,20 +106,20 @@ exports.update = (req, res, next) => {
     }
     TrxJabatanStruktural.findOne(
         {where : {
-            nip : req.params.nip, 
+            kode_pegawai : req.params.kode_pegawai, 
             kode_jabatan_struktural : req.params.kode_jabatan_struktural, 
             periode : req.params.periode
         }}
     )
     .then((app) => {
         if(!app) {
-            const error = new Error("Kode Tidak Ada");
+            const error = new Error("pegawai Tidak Ada");
             error.statusCode = 422; 
             throw error ;
         }
         return TrxJabatanStruktural.update(data, 
             {where : {
-                nip : req.params.nip, 
+                kode_pegawai : req.params.kode_pegawai, 
                 kode_jabatan_struktural : req.params.kode_jabatan_struktural, 
                 periode : req.params.periode,    
             }})
@@ -143,7 +143,7 @@ exports.update = (req, res, next) => {
 exports.destroy = (req, res, next) => {
     TrxJabatanStruktural.findOne({where : 
         {
-            nip : req.params.nip, 
+            kode_pegawai : req.params.kode_pegawai, 
             kode_jabatan_struktural : req.params.kode_jabatan_struktural, 
             periode : req.params.periode,    
         }
@@ -156,7 +156,7 @@ exports.destroy = (req, res, next) => {
         }
         return TrxJabatanStruktural.destroy({
             where : {
-                nip : req.params.nip, 
+                kode_pegawai : req.params.kode_pegawai, 
                 kode_jabatan_struktural : req.params.kode_jabatan_struktural, 
                 periode : req.params.periode,    
             }
