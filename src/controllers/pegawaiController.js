@@ -14,6 +14,8 @@ const JafungPangkat = require("../models/jafungPangkat");
 const TrxJabatanPengadaan = require("../models/trxJabatanPengadaan");
 const JabatanPengadaanDetail = require("../models/jabatanpengadaandetail");
 const {generateKode} = require("../helper/generatekode2")
+const db = require("../database")
+
 
 
 exports.index = (req, res, next) => {
@@ -64,79 +66,83 @@ exports.index = (req, res, next) => {
 };
 
 exports.store = (req, res, next) =>{
-    Pegawai.max("kode_pegawai")
-    .then((kode)=> {
-        const kode_hasil = generateKode(kode)
-        console.log("Tes :", kode_hasil)
-        if(req.file){
-            const filename = path.parse(req.file.filename).base;
-            return Pegawai.create({
-                kode_pegawai : kode_hasil,
-                nip : req.body.nip, 
-                nama_pegawai : req.body.nama_pegawai,
-                tempat_lahir : req.body.tempat_lahir, 
-                tanggal_lahir : req.body.tanggal_lahir, 
-                jenis_kelamin : req.body.jenis_kelamin, 
-                kode_agama : req.body.kode_agama, 
-                tmt_cpns : req.body.tmt_cpns, 
-                tmt_pns : req.body.tmt_pns,
-                ktp : req.body.ktp,
-                alamat : req.body.alamat,
-                nomor_telp : req.body.nomor_telp, 
-                email : req.body.email, 
-                kode_anggota_fungsional : req.body.kode_anggota_fungsional,
-                status_nikah : req.body.status_nikah, 
-                status_pegawai : req.body.status_pegawai,
-                foto_pegawai : filename,
-                facebook : req.body.facebook, 
-                instagram : req.body.instagram, 
-                twitter : req.body.twitter, 
-                ucr : req.user
-            });
-        }
-        else{
-            return Pegawai.create({
-                kode_pegawai : kode_hasil,
-                nip : req.body.nip, 
-                nama_pegawai : req.body.nama_pegawai,
-                tempat_lahir : req.body.tempat_lahir, 
-                tanggal_lahir : req.body.tanggal_lahir, 
-                jenis_kelamin : req.body.jenis_kelamin,
-                gelar_depan : req.body.gelar_depan, 
-                gelar_belakang : req.body.gelar_belakang,
-                kode_jenis_fungsional : req.body.kode_jenis_fungsional,
-                kode_anggota_fungsional : req.body.kode_anggota_fungsional,
-                kode_status_aktivitas : req.body.kode_status_aktivitas, 
-                kode_jenis_pegawai : req.body.kode_jenis_pegawai,
-                kode_agama : req.body.kode_agama, 
-                tmt_cpns : req.body.tmt_cpns, 
-                tmt_pns : req.body.tmt_pns,
-                ktp : req.body.ktp,
-                alamat : req.body.alamat,
-                nomor_telp : req.body.nomor_telp, 
-                email : req.body.email, 
-                status_nikah : req.body.status_nikah, 
-                status_pegawai : req.body.status_pegawai,
-                facebook : req.body.facebook, 
-                instagram : req.body.instagram, 
-                twitter : req.body.twitter, 
-                ucr : req.user
-            });
-        }   
-    })
-    .then((create_pegawai) => {
-        res.json({
-            status : "Success", 
-            message : "Berhasil Menambah Data", 
-            data : create_pegawai
+    return db.transaction()
+    .then((t) => {
+        return Pegawai.max("kode_pegawai")
+        .then((kode)=> {
+            const kode_hasil = generateKode(kode)
+            console.log("Tes :", kode_hasil)
+            if(req.file){
+                const filename = path.parse(req.file.filename).base;
+                return Pegawai.create({
+                    kode_pegawai : kode_hasil,
+                    nip : req.body.nip, 
+                    nama_pegawai : req.body.nama_pegawai,
+                    tempat_lahir : req.body.tempat_lahir, 
+                    tanggal_lahir : req.body.tanggal_lahir, 
+                    jenis_kelamin : req.body.jenis_kelamin, 
+                    kode_agama : req.body.kode_agama, 
+                    tmt_cpns : req.body.tmt_cpns, 
+                    tmt_pns : req.body.tmt_pns,
+                    ktp : req.body.ktp,
+                    alamat : req.body.alamat,
+                    nomor_telp : req.body.nomor_telp, 
+                    email : req.body.email, 
+                    kode_anggota_fungsional : req.body.kode_anggota_fungsional,
+                    status_nikah : req.body.status_nikah, 
+                    status_pegawai : req.body.status_pegawai,
+                    foto_pegawai : filename,
+                    facebook : req.body.facebook, 
+                    instagram : req.body.instagram, 
+                    twitter : req.body.twitter, 
+                    ucr : req.user
+                }, {transaction : t})
+                .then((insert) => {
+                    if(!insert) {
+                        const error = new Error("Data gagal Masuk")
+                        error.statusCode = 422;
+                        throw error
+                    }
+                    
+                })
+            }
+            else{
+                return Pegawai.create({
+                    kode_pegawai : kode_hasil,
+                    nip : req.body.nip, 
+                    nama_pegawai : req.body.nama_pegawai,
+                    tempat_lahir : req.body.tempat_lahir, 
+                    tanggal_lahir : req.body.tanggal_lahir, 
+                    jenis_kelamin : req.body.jenis_kelamin,
+                    gelar_depan : req.body.gelar_depan, 
+                    gelar_belakang : req.body.gelar_belakang,
+                    kode_jenis_fungsional : req.body.kode_jenis_fungsional,
+                    kode_anggota_fungsional : req.body.kode_anggota_fungsional,
+                    kode_status_aktivitas : req.body.kode_status_aktivitas, 
+                    kode_jenis_pegawai : req.body.kode_jenis_pegawai,
+                    kode_agama : req.body.kode_agama, 
+                    tmt_cpns : req.body.tmt_cpns, 
+                    tmt_pns : req.body.tmt_pns,
+                    ktp : req.body.ktp,
+                    alamat : req.body.alamat,
+                    nomor_telp : req.body.nomor_telp, 
+                    email : req.body.email, 
+                    status_nikah : req.body.status_nikah, 
+                    status_pegawai : req.body.status_pegawai,
+                    facebook : req.body.facebook, 
+                    instagram : req.body.instagram, 
+                    twitter : req.body.twitter, 
+                    ucr : req.user
+                });
+            }   
+        })
+        .catch((err) => {
+            if(!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
         });
     })
-    .catch((err) => {
-        if(!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
-    });
 };
 
 exports.show = (req, res, next) => {
