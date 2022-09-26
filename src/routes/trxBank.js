@@ -13,12 +13,12 @@ const {check , validationResult} = require("express-validator");
 
 router.get("/", index);
 
-router.get("/:nip/:kode_bank", show);
+router.get("/:kode_pegawai/:kode_bank", show);
 
 router.post("/", store)
 
-router.put("/:nip/:kode_bank", update)
+router.put("/:kode_pegawai/:kode_bank", update)
 
-router.delete("/:nip/:kode_bank", destroy)
+router.delete("/:kode_pegawai/:kode_bank", destroy)
 
 module.exports = router

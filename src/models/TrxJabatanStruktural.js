@@ -6,14 +6,10 @@ const JabatanStruktural = require("./jabatanStruktural")
 const TrxJabatanStruktural = db.define(
     "TrxJabatanStruktural",
     {
-        nip: {
+        kode_pegawai: {
             type: DataTypes.STRING(20),
             primaryKey: true,
             allowNull: false,
-        },
-        kode_pegawai: {
-            type: DataTypes.STRING(20),
-            allowNull: true,
         },
         kode_jabatan_struktural: {
             type: DataTypes.STRING(3),

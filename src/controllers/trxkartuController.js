@@ -7,7 +7,7 @@ exports.index = (req, res, next) => {
         include : [
             {
                 model : Pegawai, 
-                attributes : ["nip", "nama_pegawai"]
+                attributes : ["kode_pegawai", "nip", "nama_pegawai"]
             }, 
             {
                 model : Kartu, 
@@ -33,13 +33,13 @@ exports.index = (req, res, next) => {
 exports.show = (req, res,next) => {
     TrxKartu.findOne({
         where : {
-            nip : req.params.nip, 
+            kode_pegawai : req.params.kode_pegawai, 
             kode_kartu : req.params.kode_kartu
         },
         include : [
             {
                 model : Pegawai, 
-                attributes : ["nip", "nama_pegawai"]
+                attributes : ["kode_pegawai", "nip", "nama_pegawai"]
             }, 
             {
                 model : Kartu, 
@@ -71,7 +71,7 @@ exports.store = (req, res, next) => {
     const request = req.body;
     const data = request.kartu.map((item) => {
     return {
-            nip : item.nip, 
+            kode_pegawai : item.kode_pegawai, 
             kode_kartu : item.kode_kartu, 
             nomor_kartu : item.nomor_kartu,
         }
@@ -88,7 +88,7 @@ exports.store = (req, res, next) => {
         const request = req.body;
         const data = request.kartu.map((item) => {
             return {
-                nip : item.nip, 
+                kode_pegawai : item.kode_pegawai, 
                 kode_kartu : item.kode_kartu, 
                 nomor_kartu : item.nomor_kartu,
             }
@@ -116,18 +116,18 @@ exports.update = (req, res, next) => {
     }
     TrxKartu.findOne({
         where : {
-            nip : req.params.nip, 
+            kode_pegawai : req.params.kode_pegawai, 
             kode_kartu : req.params.kode_kartu
         }
     })
     .then((app) => {
         if(!app) {
-            const error = new Error("Nip / Kode_Kartu Tidak Ada");
+            const error = new Error("kode pegawai / Kode_Kartu Tidak Ada");
             error.statuCode = 422; 
             throw error;
         }
         return TrxKartu.update(data, {where : {
-            nip : req.params.nip, 
+            kode_pegawai : req.params.kode_pegawai, 
             kode_kartu : req.params.kode_kartu,
         }})
     })
@@ -149,7 +149,7 @@ exports.update = (req, res, next) => {
 exports.destroy = (req, res, next) => {
     TrxKartu.findOne({
         where : {
-            nip : req.params.nip, 
+            kode_pegawai : req.params.kode_pegawai, 
             kode_kartu : req.params.kode_kartu,
         }
     })
@@ -161,7 +161,7 @@ exports.destroy = (req, res, next) => {
         }
         return TrxKartu.destroy({
             where : {
-                nip : req.params.nip, 
+                kode_pegawai : req.params.kode_pegawai, 
                 kode_kartu : req.params.kode_kartu,
             }
         })

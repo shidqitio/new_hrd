@@ -19,15 +19,14 @@ const Pegawai = db.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    kode_anggota_fungsional: {
+    kode_jenis_fungsional: {
       type: DataTypes.STRING(2),
-      unique: true,
       allowNull: false,
     },
     kode_anggota_fungsional: {
       type: DataTypes.STRING(20),
       unique: true,
-      allowNull: false,
+      allowNull: true,
     },
     kode_jenis_pegawai : {
       type : DataTypes.STRING(2), 

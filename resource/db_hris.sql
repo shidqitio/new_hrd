@@ -452,7 +452,7 @@ CREATE TABLE IF NOT EXISTS `ref_pegawai` (
   `nomor_telp` varchar(50) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `status_nikah` enum('Nikah','Belum Nikah','Janda','Duda','Tidak Menikah','Relationship','Available') DEFAULT NULL,
-  `kode_status_aktivitas` int(11) DEFAULT NULL,
+  `kode_status_aktivitas` int(11) DEFAULT 1,
   `foto_pegawai` varchar(100) DEFAULT NULL,
   `facebook` varchar(255) DEFAULT NULL,
   `instagram` varchar(255) DEFAULT NULL,
@@ -472,7 +472,7 @@ CREATE TABLE IF NOT EXISTS `ref_pegawai` (
   CONSTRAINT `ref_pegawai_FK_1` FOREIGN KEY (`kode_agama`) REFERENCES `ref_agama` (`kode_agama`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table db_hris.ref_pegawai: ~0 rows (approximately)
+-- Dumping data for table db_hris.ref_pegawai: ~4.451 rows (approximately)
 INSERT INTO `ref_pegawai` (`nip`, `kode_pegawai`, `kode_jenis_pegawai`, `kode_jenis_fungsional`, `kode_anggota_fungsional`, `nama_pegawai`, `gelar_depan`, `gelar_belakang`, `tempat_lahir`, `tanggal_lahir`, `jenis_kelamin`, `kode_agama`, `tmt_cpns`, `tmt_pns`, `ktp`, `alamat`, `nomor_telp`, `email`, `status_nikah`, `kode_status_aktivitas`, `foto_pegawai`, `facebook`, `instagram`, `ucr`, `uch`, `udcr`, `udch`) VALUES
 	('000000001', '000000001', '01', '02', NULL, 'abc', 'S', 'T', 'Bogor', '1975-11-14', 'Laki-Laki', '01', '2023-08-31', NULL, '', NULL, '0000000000000000000000', NULL, 'Available', 1, 'blank.png', '', '', 'pipeline', NULL, '2022-09-25 09:22:39', NULL),
 	('000000002', '000000002', '01', '02', NULL, 'bcd', 'S', 'T', 'Bogor', '1975-11-14', 'Laki-Laki', '01', '2023-08-31', NULL, '', NULL, '0000000000000000000000', NULL, 'Nikah', 1, 'blank.png', '', '', 'pipeline', NULL, '2022-09-25 09:22:39', NULL),
@@ -5039,6 +5039,7 @@ CREATE TABLE IF NOT EXISTS `ref_tingkat_pendidikan` (
 
 -- Dumping structure for table db_hris.ref_unit
 CREATE TABLE IF NOT EXISTS `ref_unit` (
+  `kode_unit_induk` char(4) DEFAULT NULL,
   `kode_unit` char(16) NOT NULL,
   `revisi_ke` int(11) NOT NULL DEFAULT 0,
   `nama_unit` varchar(255) DEFAULT NULL,
@@ -5050,19 +5051,45 @@ CREATE TABLE IF NOT EXISTS `ref_unit` (
   `uch` varchar(100) DEFAULT NULL,
   `udcr` timestamp NULL DEFAULT current_timestamp(),
   `udch` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  PRIMARY KEY (`kode_unit`,`revisi_ke`)
+  PRIMARY KEY (`kode_unit`,`revisi_ke`),
+  KEY `FK_ref_unit_ref_unit_induk` (`kode_unit_induk`),
+  CONSTRAINT `FK_ref_unit_ref_unit_induk` FOREIGN KEY (`kode_unit_induk`) REFERENCES `ref_unit_induk` (`kode_unit_induk`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table db_hris.ref_unit: ~0 rows (approximately)
 
 -- Dumping structure for table db_hris.ref_unit_induk
 CREATE TABLE IF NOT EXISTS `ref_unit_induk` (
-  `id_unit_induk` char(4) NOT NULL,
+  `kode_unit_induk` char(4) NOT NULL,
   `nama_unit_induk` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id_unit_induk`)
+  `ucr` varchar(100) DEFAULT NULL,
+  `uch` varchar(100) DEFAULT NULL,
+  `udcr` timestamp NULL DEFAULT current_timestamp(),
+  `udch` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  PRIMARY KEY (`kode_unit_induk`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table db_hris.ref_unit_induk: ~0 rows (approximately)
+-- Dumping data for table db_hris.ref_unit_induk: ~19 rows (approximately)
+INSERT INTO `ref_unit_induk` (`kode_unit_induk`, `nama_unit_induk`, `ucr`, `uch`, `udcr`, `udch`) VALUES
+	('1', 'Universitas Terbuka (Rektor)\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('10', 'Unit Pelaksana Teknis Pengembangan Profesi\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('11', 'Unit Pelaksana Teknis Teknologi dan Komunikasi\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('12', 'Badan Pengelola dan Pengembangan Usaha\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('13', 'Satuan Pengawas Internal\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('14', 'Unit Pengadaan Barang/Jasa\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('15', 'Unit Kearsipan\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('16', 'Unit Pengembangan Pembelajaran Dalam Jaringan Indonesia\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('17', 'Senat Universitas\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('18', 'Dewan Penyantun\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('19', 'Dewan Pengawas\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('2', 'Wakil Rektor\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('3', 'Biro Akademik, Kemahasiswaan, dan Perencanaan\r\n', NULL, NULL, '2022-09-25 14:27:08', NULL),
+	('4', 'Biro Keuangan, Umum dan Kerja Sama\r\n', NULL, NULL, '2022-09-25 14:27:09', NULL),
+	('5', 'Fakultas\r\n', NULL, NULL, '2022-09-25 14:27:09', NULL),
+	('6', 'Lembaga Penelitian dan Pengabdian Kepada Masyarakat\r\n', NULL, NULL, '2022-09-25 14:27:09', NULL),
+	('7', 'Lembaga Pengembangan dan Penjaminan Mutu Pendidikan\r\n', NULL, NULL, '2022-09-25 14:27:09', NULL),
+	('8', 'Unit Pelaksana Teknis Unit Program Belajar Jarak Jauh Universitas Terbuka (UPT UPBJJ-UT)\r\n', NULL, NULL, '2022-09-25 14:27:09', NULL),
+	('9', 'Unit Pelaksana Teknis Perpustakaan\r\n', NULL, NULL, '2022-09-25 14:27:09', NULL);
 
 -- Dumping structure for table db_hris.ref_unsur_utama
 CREATE TABLE IF NOT EXISTS `ref_unsur_utama` (
