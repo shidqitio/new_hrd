@@ -1,0 +1,3 @@
+DB DIAGRAM => https://dbdiagram.io/d/633118a57b3d2034ffb1edb9
+
+TAMBAHAN SPK => https://dbdiagram.io/d/6332825b7b3d2034ffc30283
