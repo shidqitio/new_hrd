@@ -50,7 +50,7 @@ const RefKegiatanSub2 = db.define(
     {
         tableName: "ref_kegiatan_sub2",
         createdAt: "udcr",
-        updatedAt: "udch"
+        updatedAt: false
     }
 )
 

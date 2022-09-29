@@ -1,10 +1,10 @@
-const RefKegiatanSub1 = require("../models/refKegiatanSub1");
+const RefKegiatanSub4 = require("../models/refKegiatanSub4");
 const generateKode = require("../utils/generateCode");
 const RefAngkaKredit = require("../models/refAngkaKredit");
 const db = require("../database/index");
 
 exports.index = (req, res, next) => {
-    RefKegiatanSub1.findAll({
+    RefKegiatanSub4.findAll({
         include: [
             {
                 model: RefAngkaKredit
@@ -35,8 +35,8 @@ exports.index = (req, res, next) => {
 };
 
 exports.store = (req, res, next) => {
-    let kode_unsur_utama = req.body.kode_unsur_utama
-    let nama_kegiatan_sub1 = req.body.nama_kegiatan_sub1
+    let kode_kegiatan_sub3 = req.body.kode_kegiatan_sub3
+    let nama_kegiatan_sub4 = req.body.nama_kegiatan_sub4
     let satuan_batas_max = req.body.satuan_batas_max
     let keterangan_satuan = req.body.keterangan_satuan
     let angka_kredit = req.body.angka_kredit
@@ -44,17 +44,17 @@ exports.store = (req, res, next) => {
 
     return db.transaction()
         .then(async (t) => {
-            RefKegiatanSub1.max("kode_kegiatan_sub1", {
-                where: { kode_unsur_utama: kode_unsur_utama }
+            RefKegiatanSub4.max("kode_kegiatan_sub4", {
+                where: { kode_kegiatan_sub3: kode_kegiatan_sub3 }
             })
                 .then((kode) => {
-                    let kode_kegiatan_sub = kode_unsur_utama + "." + generateKode.generateKode1(kode)
+                    let kode_kegiatan_sub = kode_kegiatan_sub3 + "." + generateKode.generateKode4(kode)
                     console.log("kodeeeee", kode_kegiatan_sub)
 
-                    return RefKegiatanSub1.create({
-                        kode_unsur_utama: kode_unsur_utama,
-                        kode_kegiatan_sub1: kode_kegiatan_sub,
-                        nama_kegiatan_sub1: nama_kegiatan_sub1,
+                    return RefKegiatanSub4.create({
+                        kode_kegiatan_sub3: kode_kegiatan_sub3,
+                        kode_kegiatan_sub4: kode_kegiatan_sub,
+                        nama_kegiatan_sub4: nama_kegiatan_sub4,
                         satuan_batas_max: satuan_batas_max,
                         keterangan_satuan: keterangan_satuan
                     }, { transaction: t })
@@ -66,13 +66,13 @@ exports.store = (req, res, next) => {
                                     kode_kegiatan: kode_kegiatan_sub,
                                     angka_kredit: angka_kredit,
                                     keterangan_bukti_keg: keterangan_bukti_keg
-                                }, { transaction: t })
+                                })
                                     .then((Resss) => {
                                         res.json({
                                             status: "success",
                                             message: "Berhasil menampilkan data",
                                             data: {
-                                                kegiatanSub1: Ress,
+                                                kegiatanSub3: Ress,
                                                 angkaKredit: Resss
                                             },
                                         });
@@ -106,6 +106,7 @@ exports.store = (req, res, next) => {
                     if (!err.statusCode) {
                         err.statusCode = 500;
                     }
+                    console.log(err)
                     t.rollback()
                     next(err);
                 });
@@ -113,9 +114,9 @@ exports.store = (req, res, next) => {
 };
 
 exports.show = (req, res, next) => {
-    RefKegiatanSub1.findOne({
+    RefKegiatanSub4.findOne({
         where: {
-            kode_kegiatan_sub1: req.params.id
+            kode_kegiatan_sub4: req.params.id
         },
         include: [
             {
@@ -125,7 +126,7 @@ exports.show = (req, res, next) => {
     })
         .then((Res) => {
             if (!Res) {
-                const error = new Error("Kode kegiatan Sub 1 tidak ada.");
+                const error = new Error("Kode kegiatan Sub 4 tidak ada.");
                 error.statusCode = 422;
                 throw error;
             }
@@ -145,25 +146,25 @@ exports.show = (req, res, next) => {
 
 exports.update = (req, res, next) => {
     const dataKegiatan = {
-        nama_kegiatan_sub1: req.body.nama_kegiatan_sub1,
+        nama_kegiatan_sub4: req.body.nama_kegiatan_sub4,
         satuan_batas_max: req.body.satuan_batas_max,
         keterangan_satuan: req.body.keterangan_satuan,
         uch: req.body.kode_pegawai
     };
 
-    let kode_kegiatan_sub1 = req.params.id
+    let kode_kegiatan_sub4 = req.params.id
 
-    RefKegiatanSub1.findOne({ where: { kode_kegiatan_sub1: kode_kegiatan_sub1 } })
+    RefKegiatanSub4.findOne({ where: { kode_kegiatan_sub4: kode_kegiatan_sub4 } })
         .then((Res) => {
             if (!Res) {
-                const error = new Error("Kode kegiatan sub 1 tidak ada.");
+                const error = new Error("Kode kegiatan sub 4 tidak ada.");
                 error.statusCode = 422;
                 throw error;
             }
 
-            return RefKegiatanSub1.update(dataKegiatan, {
+            return RefKegiatanSub4.update(dataKegiatan, {
                 where: {
-                    kode_kegiatan_sub1: kode_kegiatan_sub1
+                    kode_kegiatan_sub4: kode_kegiatan_sub4
                 }
             })
                 .then((Ress) => {
@@ -183,16 +184,16 @@ exports.update = (req, res, next) => {
 };
 
 exports.destroy = (req, res, next) => {
-    RefKegiatanSub1.findOne({ where: { kode_kegiatan_sub1: req.params.id } })
+    RefKegiatanSub4.findOne({ where: { kode_kegiatan_sub4: req.params.id } })
         .then((app) => {
             if (!app) {
-                const error = new Error("Kode kegiatan sub 1 tidak ada.");
+                const error = new Error("Kode kegiatan sub 4 tidak ada.");
                 error.statusCode = 422;
                 throw error;
             }
-            return RefKegiatanSub1.destroy({
+            return RefKegiatanSub4.destroy({
                 where: {
-                    kode_kegiatan_sub1: req.params.id,
+                    kode_kegiatan_sub4: req.params.id,
                 },
             })
                 .then((response) => {

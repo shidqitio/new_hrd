@@ -7,7 +7,7 @@ const {
     update,
     destroy,
 
-} = require("../controllers/refKegiatanSub1");
+} = require("../controllers/refKegiatanSub2");
 
 router.get("/", index);
 
