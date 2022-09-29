@@ -90,6 +90,4 @@ router.use("/trxanjabformeupbjj", trxanjabformeupbjjRouter)
 router.use("/subkelas", subkelasRouter)
 router.use("/jenis-pegawai", jenispegawaiRouter);
 
-
-
 module.exports = router;
