@@ -20,11 +20,6 @@ const Pegawai = db.define(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    kode_jenis_fungsional: {
-      type: DataTypes.STRING(2),
-      unique: true,
-      allowNull: false,
-    },
     gelar_depan : {
       type : DataTypes.STRING(50), 
       allowNull : true
@@ -89,6 +84,14 @@ const Pegawai = db.define(
     foto_pegawai: {
       type: DataTypes.STRING(255),
       allowNull: true
+    },
+    facebook : {
+      type : DataTypes.STRING(255), 
+      allowNull : true
+    }, 
+    instagram : {
+      type : DataTypes.STRING(255), 
+      allowNull : true
     },
     ucr: {
       type: DataTypes.STRING(100),

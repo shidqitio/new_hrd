@@ -113,7 +113,7 @@ router.post(
 
 
 router.put(
-  "/:nip", 
+  "/:id", 
   [
     uploadImage.single("foto_pegawai"),
     check("nama_pegawai")
@@ -197,13 +197,13 @@ router.put(
   update
 );
 
-router.get("/:nip", show);
+router.get("/:id", show);
 
-router.get("/ppk/:nip/:kode_unit", pegawaippk)
+router.get("/ppk/:id/:kode_unit", pegawaippk)
 
 router.get("/email/:email",showbyEmail)
 
-router.delete("/:nip", destroy);
+router.delete("/:id", destroy);
 
 
 
