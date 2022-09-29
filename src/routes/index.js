@@ -60,7 +60,7 @@ router.use("/jafungpangkat", jafungpangkatRoutes)
 router.use("/keluarga",keluargaRoutes);
 router.use("/jastruk", jabatanstrukturalRoutes);
 router.use("/karya_tulis", jeniskaryatulisRoutes);
-router.use("/tingkat_pendidikan", tingkatpendidikanRoutes);
+router.use("/tingkatpendidikan", tingkatpendidikanRoutes);
 router.use("/prodi", programstudiRoutes);
 router.use("/jurusan", jurusanRoutes);
 router.use("/bank", bankRoutes);
