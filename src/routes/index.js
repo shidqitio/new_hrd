@@ -48,7 +48,7 @@ router.use("/pegawai", pegawaiRoutes);
 router.use("/golonganruang",golonganruangRoutes);
 router.use("/jenisfungsional",jenisfungsionalRoutes);
 router.use("/jafung",jafungRoutes); 
-router.use("/jafpang", jafungpangkatRoutes)
+router.use("/jafungpangkat", jafungpangkatRoutes)
 router.use("/keluarga",keluargaRoutes);
 router.use("/jastruk", jabatanstrukturalRoutes);
 router.use("/karya_tulis", jeniskaryatulisRoutes);

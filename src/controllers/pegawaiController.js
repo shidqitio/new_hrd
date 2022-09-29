@@ -13,6 +13,8 @@ const Jafung = require("../models/jafung");
 const JafungPangkat = require("../models/jafungPangkat");
 const TrxJabatanPengadaan = require("../models/trxJabatanPengadaan");
 const JabatanPengadaanDetail = require("../models/jabatanpengadaandetail");
+const TrxJenisPegawai = require("../models/trxJenisPegawai")
+const JenisPegawai = require("../models/refJenisPegawai")
 const {generateKode} = require("../helper/generatekode2")
 const db = require("../database")
 
@@ -30,7 +32,7 @@ exports.index = (req, res, next) => {
             },
             {
                 model : TrxUnitKerjaPegawai, 
-                attributes : ["kode_unit", "nip"], 
+                attributes : ["kode_unit", "kode_pegawai"], 
                 include : [
                     {
                         model : Unit, 
@@ -45,6 +47,17 @@ exports.index = (req, res, next) => {
                     {
                         model : Bank, 
                         attributes : ["kode_bank", "nama_bank"],
+                    }
+                ]
+            }, 
+            {
+                model : TrxJenisPegawai, 
+                attributes : {
+                    exclude : ["ucr", "uch", "udch"]
+                }, 
+                include : [
+                    {
+                        model : JenisPegawai
                     }
                 ]
             }
@@ -82,6 +95,10 @@ exports.store = (req, res, next) =>{
                     tanggal_lahir : req.body.tanggal_lahir, 
                     jenis_kelamin : req.body.jenis_kelamin, 
                     kode_agama : req.body.kode_agama, 
+                    gelar_depan : req.body.gelar_depan, 
+                    gelar_belakang : req.body.gelar_belakang,
+                    kode_status_aktivitas : req.body.kode_status_aktivitas, 
+                    kode_jenis_pegawai : req.body.kode_jenis_pegawai,
                     tmt_cpns : req.body.tmt_cpns, 
                     tmt_pns : req.body.tmt_pns,
                     ktp : req.body.ktp,
@@ -97,14 +114,6 @@ exports.store = (req, res, next) =>{
                     twitter : req.body.twitter, 
                     ucr : req.user
                 }, {transaction : t})
-                .then((insert) => {
-                    if(!insert) {
-                        const error = new Error("Data gagal Masuk")
-                        error.statusCode = 422;
-                        throw error
-                    }
-                    
-                })
             }
             else{
                 return Pegawai.create({
@@ -116,7 +125,6 @@ exports.store = (req, res, next) =>{
                     jenis_kelamin : req.body.jenis_kelamin,
                     gelar_depan : req.body.gelar_depan, 
                     gelar_belakang : req.body.gelar_belakang,
-                    kode_jenis_fungsional : req.body.kode_jenis_fungsional,
                     kode_anggota_fungsional : req.body.kode_anggota_fungsional,
                     kode_status_aktivitas : req.body.kode_status_aktivitas, 
                     kode_jenis_pegawai : req.body.kode_jenis_pegawai,
@@ -133,14 +141,33 @@ exports.store = (req, res, next) =>{
                     instagram : req.body.instagram, 
                     twitter : req.body.twitter, 
                     ucr : req.user
-                });
+                }, {transaction : t})
             }   
+        })
+        .then((insert) => {
+            if(!insert) {
+                const error = new Error("Data gagal Masuk")
+                error.statusCode = 422;
+                throw error
+            }
+            return TrxJenisPegawai.create({
+                kode_pegawai : insert.kode_pegawai, 
+                kode_jenis_pegawai : req.body.kode_jenis_pegawai, 
+            },{transaction : t})
+        })
+        .then(() => {
+            res.json({ 
+                status : "Success", 
+                message : "Data Berhasil Masuk"
+            })
+            return t.commit()
         })
         .catch((err) => {
             if(!err.statusCode) {
                 err.statusCode = 500;
             }
-            next(err);
+            t.rollback();
+            return next(err);
         });
     })
 };
@@ -245,18 +272,18 @@ exports.update = (req, res, next) => {
         }
     }
 
-    Pegawai.findOne({ where : {nip : req.params.nip}})
+    Pegawai.findOne({ where : {kode_pegawai : req.params.id}})
     .then((app) => {
         if(req.file){
             if(app.foto_pegawai !== null) {
                 clearImage(app.foto_pegawai);
-                return Pegawai.update(data, {where : {nip : req.params.nip}});
+                return Pegawai.update(data, {where : {kode_pegawai : req.params.id}});
             } else if(app.foto_pegawai === null) {
-                return Pegawai.update(data, {where : {nip : req.params.nip}});
+                return Pegawai.update(data, {where : {kode_pegawai : req.params.id}});
             }
         }
         else{
-            return Pegawai.update(data, {where : {nip : req.params.nip}});
+            return Pegawai.update(data, {where : {kode_pegawai : req.params.id}});
         }
 
         if(!app) {
@@ -283,7 +310,7 @@ exports.update = (req, res, next) => {
 };
 
 exports.destroy =  (req, res, next) => {
-    Pegawai.findOne({where : {nip : req.params.nip }})
+    Pegawai.findOne({where : {kode_pegawai : req.params.id }})
     .then((app) => {
         if(!app) {
             const error = new Error("NIP Tidak Ada");
@@ -292,12 +319,12 @@ exports.destroy =  (req, res, next) => {
         }
         if(app.foto_pegawai === null){
             return Pegawai.destroy({
-                where : {nip : req.params.nip},
+                where : {kode_pegawai : req.params.id},
             });
         } else{
             clearImage(app.foto_pegawai);
             return Pegawai.destroy({
-                where : {nip : req.params.nip},
+                where : {kode_pegawai : req.params.id},
             });
         }
 
@@ -385,7 +412,7 @@ const clearImage = (filePath) => {
 exports.pegawaippk = (req, res, next) => {
     Pegawai.findOne({
         where : {
-            nip : req.params.nip
+            kode_pegawai : req.params.id
         },
         include : [
             {
