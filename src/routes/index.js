@@ -39,8 +39,10 @@ const trxanjabformeRouter = require("./trxAnjabFormE");
 const trxunitkerjaupbjjRouter = require("./trxUnitKerjaUpbjj");
 const trxanjabformeupbjjRouter = require("./trxAnjabFormEUpbjj")
 const subkelasRouter = require("./subKelas");
-const jenispegawaiRouter = require("./jenisPegawai")
+const jenispegawaiRouter = require("./jenisPegawai");
+const refKegiatanSub1 = require("./refKegiatanSub1");
 
+router.use("/kegiatan-sub1", refKegiatanSub1);
 router.use("/agama", agamaRoutes);
 router.use("/fakultas", fakultasRoutes);
 router.use("/hukuman", hukumanRoutes);
