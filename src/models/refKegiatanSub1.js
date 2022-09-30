@@ -1,13 +1,18 @@
 const { DataTypes } = require("sequelize")
 const db = require("../database")
 const unsurUtama = require("./unsurUtama")
+const unsurPendukung = require("./unsurPendukung")
 
 const RefKegiatanSub1 = db.define(
     "RefKegiatanSub1",
     {
         kode_unsur_utama: {
             type: DataTypes.STRING(4),
-            allowNull: false,
+            allowNull: true,
+        },
+        kode_unsur_pendukung: {
+            type: DataTypes.STRING(4),
+            allowNull: true,
         },
         kode_kegiatan_sub1: {
             type: DataTypes.STRING(7),
@@ -60,6 +65,14 @@ unsurUtama.hasMany(RefKegiatanSub1, {
 
 RefKegiatanSub1.belongsTo(unsurUtama, {
     foreignKey: "kode_unsur_utama"
+})
+
+unsurPendukung.hasMany(RefKegiatanSub1, {
+    foreignKey: "kode_unsur_pendukung"
+})
+
+RefKegiatanSub1.belongsTo(unsurPendukung, {
+    foreignKey: "kode_unsur_pendukung"
 })
 
 module.exports = RefKegiatanSub1

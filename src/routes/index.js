@@ -44,7 +44,11 @@ const refKegiatanSub1 = require("./refKegiatanSub1");
 const refKegiatanSub2 = require("./refKegiatanSub2");
 const refKegiatanSub3 = require("./refKegiatanSub3");
 const refKegiatanSub4 = require("./refKegiatanSub4");
+const unsurPendukung = require("./unsurPendukung");
+const refAngkaKredit = require("./refAngkaKredit");
 
+router.use("/angka-kredit", refAngkaKredit);
+router.use("/unsur-pendukung", unsurPendukung);
 router.use("/kegiatan-sub4", refKegiatanSub4);
 router.use("/kegiatan-sub3", refKegiatanSub3);
 router.use("/kegiatan-sub2", refKegiatanSub2);
