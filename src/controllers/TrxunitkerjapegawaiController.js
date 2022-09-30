@@ -49,7 +49,7 @@ exports.store = (req, res, next) => {
                                 tanggal_mulai: req.body.tanggal_mulai,
                             }, { transaction: t })
                         })
-                        .then(() => {
+                        .then((unit) => {
                             let kode_jafung_pangkat = req.body.kode_jafung_pangkat;
                             let kode_jafung = kode_jafung_pangkat.substring(5, 0)
                             let kode_jenis_fungsional = kode_jafung_pangkat.substring(2, 0)
@@ -63,28 +63,40 @@ exports.store = (req, res, next) => {
                                 nomor_sk_jafung: req.body.nomor_sk_jafung,
                                 ucr: req.user
                             }, { transaction: t })
-                        })
-                        .then(() => {
-                            let fakultas = req.body.kode_fakultas
-                            if (fakultas) {
-                                TrxProgramStudiPegawai.create({
-                                    kode_pegawai: req.body.kode_pegawai,
-                                    kode_fakultas: req.body.kode_fakultas,
-                                    kode_program_studi: req.body.kode_program_studi,
-                                    kode_jurusan: req.body.kode_jurusan,
-                                    kode_pindah: req.body.kode_pindah,
-                                    tanggal_mulai: req.body.tanggal_mulai
-                                })
-                                return t.commit()
-                            } else {
-                                return t.commit()
-                            }
-                        })
-                        .then((create) => {
-                            res.json({
-                                status: "Success",
-                                message: "Berhasil Menambah Data",
-                                data: create
+                            .then((jafung) => {
+                                let fakultas = req.body.kode_fakultas
+                                if (fakultas) {
+                                    TrxProgramStudiPegawai.create({
+                                        kode_pegawai: req.body.kode_pegawai,
+                                        kode_fakultas: req.body.kode_fakultas,
+                                        kode_program_studi: req.body.kode_program_studi,
+                                        kode_jurusan: req.body.kode_jurusan,
+                                        kode_pindah: req.body.kode_pindah,
+                                        tanggal_mulai: req.body.tanggal_mulai
+                                    })
+                                    .then((fakul) => {
+                                        t.commit()
+                                        return res.json({
+                                            status : "Success", 
+                                            message : "Data Berhasil Masuk", 
+                                            data : {
+                                                "unit" : unit, 
+                                                "jafung" : jafung, 
+                                                "fakultas" : fakul
+                                            }
+                                        })
+                                    })
+                                } else {
+                                    res.json({
+                                        status: "Success",
+                                        message: "Berhasil Menambah Data",
+                                        data : {
+                                            "unit" : unit, 
+                                            "jafung" : jafung
+                                        }
+                                    })
+                                    return t.commit()
+                                }
                             })
                         })
                         .catch((err) => {
