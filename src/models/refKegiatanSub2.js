@@ -27,7 +27,7 @@ const RefKegiatanSub2 = db.define(
             allowNull: false
         },
         angka_kredit: {
-            type: DataTypes.INTEGER(11),
+            type: DataTypes.FLOAT(11),
             allowNull: true
         },
         ucr: {

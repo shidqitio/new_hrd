@@ -2,6 +2,7 @@ const RefKegiatanSub2 = require("../models/refKegiatanSub2");
 const generateKode = require("../utils/generateCode");
 const RefAngkaKredit = require("../models/refAngkaKredit");
 const db = require("../database/index");
+const RefKegiatanSub1 = require("../models/refKegiatanSub1");
 
 exports.index = (req, res, next) => {
     RefKegiatanSub2.findAll({
@@ -41,76 +42,102 @@ exports.store = (req, res, next) => {
     let keterangan_satuan = req.body.keterangan_satuan
     let angka_kredit = req.body.angka_kredit
     let keterangan_bukti_keg = req.body.keterangan_bukti_keg
+    let user = req.body.ucr
 
     return db.transaction()
         .then(async (t) => {
-            RefKegiatanSub2.max("kode_kegiatan_sub2", {
-                where: { kode_kegiatan_sub1: kode_kegiatan_sub1 }
+            RefKegiatanSub1.findOne({
+                where: {
+                    kode_kegiatan_sub1: kode_kegiatan_sub1
+                },
+                attributes: [
+                    "angka_kredit"
+                ]
             })
-                .then((kode) => {
-                    let kode_kegiatan_sub = kode_kegiatan_sub1 + "." + generateKode.generateKode2(kode)
-                    console.log("kodeeeee", kode_kegiatan_sub)
+                .then((angka) => {
+                    let cek = JSON.stringify(angka.angka_kredit)
+                    console.log("Cek", cek)
+                    if (cek !== "0") {
+                        res.json({
+                            status: "failed",
+                            statusCode: 422,
+                            message: "Kegiatan Sub 1 Sudah Memiliki Angka Kredit",
+                            data: angka,
+                        });
+                        return t.rollback()
+                    } else {
+                        return RefKegiatanSub2.max("kode_kegiatan_sub2", {
+                            where: { kode_kegiatan_sub1: kode_kegiatan_sub1 }
+                        })
+                            .then((kode) => {
+                                let kode_kegiatan_sub = kode_kegiatan_sub1 + "." + generateKode.generateKode2(kode)
+                                console.log("kodeeeee", kode_kegiatan_sub)
 
-                    return RefKegiatanSub2.create({
-                        kode_kegiatan_sub1: kode_kegiatan_sub1,
-                        kode_kegiatan_sub2: kode_kegiatan_sub,
-                        nama_kegiatan_sub2: nama_kegiatan_sub2,
-                        satuan_batas_max: satuan_batas_max,
-                        keterangan_satuan: keterangan_satuan
-                    }, { transaction: t })
-                        .then((Ress) => {
-                            let cek = angka_kredit.length
-                            console.log(cek)
-                            if (cek !== 0) {
-                                return RefAngkaKredit.create({
-                                    kode_kegiatan: kode_kegiatan_sub,
+                                return RefKegiatanSub2.create({
+                                    kode_kegiatan_sub1: kode_kegiatan_sub1,
+                                    kode_kegiatan_sub2: kode_kegiatan_sub,
+                                    nama_kegiatan_sub2: nama_kegiatan_sub2,
+                                    satuan_batas_max: satuan_batas_max,
+                                    keterangan_satuan: keterangan_satuan,
                                     angka_kredit: angka_kredit,
-                                    keterangan_bukti_keg: keterangan_bukti_keg
-                                })
-                                    .then((Resss) => {
-                                        res.json({
-                                            status: "success",
-                                            message: "Berhasil menampilkan data",
-                                            data: {
-                                                kegiatanSub2: Ress,
-                                                angkaKredit: Resss
-                                            },
-                                        });
-                                        return t.commit()
+                                    ucr: user
+                                }, { transaction: t })
+                                    .then((Ress) => {
+                                        let cek = angka_kredit.length
+                                        console.log(cek)
+                                        if (cek !== 0) {
+                                            return RefAngkaKredit.create({
+                                                kode_kegiatan: kode_kegiatan_sub,
+                                                angka_kredit: angka_kredit,
+                                                keterangan_bukti_keg: keterangan_bukti_keg,
+                                                ucr: user
+                                            })
+                                                .then((Resss) => {
+                                                    res.json({
+                                                        status: "success",
+                                                        message: "Berhasil menyimpan data",
+                                                        data: {
+                                                            kegiatanSub2: Ress,
+                                                            angkaKredit: Resss
+                                                        },
+                                                    });
+                                                    return t.commit()
+                                                })
+                                                .catch((err) => {
+                                                    console.log(err)
+                                                    if (!err.statusCode) {
+                                                        err.statusCode = 500;
+                                                    }
+                                                    t.rollback()
+                                                    next(err);
+                                                });
+                                        } else {
+                                            res.json({
+                                                status: "success",
+                                                message: "Berhasil menyimpan data",
+                                                data: Ress,
+                                            });
+                                            return t.commit()
+                                        }
                                     })
                                     .catch((err) => {
-                                        console.log(err)
                                         if (!err.statusCode) {
                                             err.statusCode = 500;
                                         }
                                         t.rollback()
                                         next(err);
                                     });
-                            } else {
-                                res.json({
-                                    status: "success",
-                                    message: "Berhasil menyimpan data",
-                                    data: Ress,
-                                });
-                                return t.commit()
-                            }
-                        })
-                        .catch((err) => {
-                            if (!err.statusCode) {
-                                err.statusCode = 500;
-                            }
-                            t.rollback()
-                            next(err);
-                        });
-                })
-                .catch((err) => {
-                    if (!err.statusCode) {
-                        err.statusCode = 500;
+                            })
+                            .catch((err) => {
+                                if (!err.statusCode) {
+                                    err.statusCode = 500;
+                                }
+                                console.log(err)
+                                t.rollback()
+                                next(err);
+                            });
                     }
-                    console.log(err)
-                    t.rollback()
-                    next(err);
-                });
+                })
         })
 };
 
@@ -150,7 +177,7 @@ exports.update = (req, res, next) => {
         nama_kegiatan_sub2: req.body.nama_kegiatan_sub2,
         satuan_batas_max: req.body.satuan_batas_max,
         keterangan_satuan: req.body.keterangan_satuan,
-        uch: req.body.kode_pegawai
+        uch: req.body.uch
     };
 
     let kode_kegiatan_sub2 = req.params.id

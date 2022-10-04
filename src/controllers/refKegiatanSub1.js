@@ -58,6 +58,7 @@ exports.store = (req, res, next) => {
     let keterangan_satuan = req.body.keterangan_satuan
     let angka_kredit = req.body.angka_kredit
     let keterangan_bukti_keg = req.body.keterangan_bukti_keg
+    let user = req.body.ucr
 
     return db.transaction()
         .then(async (t) => {
@@ -76,7 +77,9 @@ exports.store = (req, res, next) => {
                             kode_kegiatan_sub1: kode_kegiatan_sub,
                             nama_kegiatan_sub1: nama_kegiatan_sub1,
                             satuan_batas_max: satuan_batas_max,
-                            keterangan_satuan: keterangan_satuan
+                            keterangan_satuan: keterangan_satuan,
+                            angka_kredit: angka_kredit,
+                            ucr: user
                         }, { transaction: t })
                             .then((Ress) => {
                                 let cek = angka_kredit.length
@@ -85,12 +88,13 @@ exports.store = (req, res, next) => {
                                     return RefAngkaKredit.create({
                                         kode_kegiatan: kode_kegiatan_sub,
                                         angka_kredit: angka_kredit,
-                                        keterangan_bukti_keg: keterangan_bukti_keg
+                                        keterangan_bukti_keg: keterangan_bukti_keg,
+                                        ucr: user
                                     }, { transaction: t })
                                         .then((Resss) => {
                                             res.json({
                                                 status: "success",
-                                                message: "Berhasil menampilkan data",
+                                                message: "Berhasil menyimpan data",
                                                 data: {
                                                     kegiatanSub1: Ress,
                                                     angkaKredit: Resss
@@ -144,7 +148,9 @@ exports.store = (req, res, next) => {
                             kode_kegiatan_sub1: kode_kegiatan_sub,
                             nama_kegiatan_sub1: nama_kegiatan_sub1,
                             satuan_batas_max: satuan_batas_max,
-                            keterangan_satuan: keterangan_satuan
+                            keterangan_satuan: keterangan_satuan,
+                            angka_kredit: angka_kredit,
+                            ucr: user
                         }, { transaction: t })
                             .then((Ress) => {
                                 let cek = angka_kredit.length
@@ -153,7 +159,8 @@ exports.store = (req, res, next) => {
                                     return RefAngkaKredit.create({
                                         kode_kegiatan: kode_kegiatan_sub,
                                         angka_kredit: angka_kredit,
-                                        keterangan_bukti_keg: keterangan_bukti_keg
+                                        keterangan_bukti_keg: keterangan_bukti_keg,
+                                        ucr: user
                                     }, { transaction: t })
                                         .then((Resss) => {
                                             res.json({
@@ -237,7 +244,7 @@ exports.update = (req, res, next) => {
         nama_kegiatan_sub1: req.body.nama_kegiatan_sub1,
         satuan_batas_max: req.body.satuan_batas_max,
         keterangan_satuan: req.body.keterangan_satuan,
-        uch: req.body.kode_pegawai
+        uch: req.body.uch
     };
 
     let kode_kegiatan_sub1 = req.params.id
