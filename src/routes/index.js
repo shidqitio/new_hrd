@@ -46,7 +46,9 @@ const refKegiatanSub3 = require("./refKegiatanSub3");
 const refKegiatanSub4 = require("./refKegiatanSub4");
 const unsurPendukung = require("./unsurPendukung");
 const refAngkaKredit = require("./refAngkaKredit");
+const unsurUtama = require("./unsurUtama");
 
+router.use("/unsurutama", unsurUtama);
 router.use("/angka-kredit", refAngkaKredit);
 router.use("/unsur-pendukung", unsurPendukung);
 router.use("/kegiatan-sub4", refKegiatanSub4);
@@ -63,7 +65,7 @@ router.use("/jafung",jafungRoutes);
 router.use("/jafungpangkat", jafungpangkatRoutes)
 router.use("/keluarga",keluargaRoutes);
 router.use("/jastruk", jabatanstrukturalRoutes);
-router.use("/karya_tulis", jeniskaryatulisRoutes);
+router.use("/jeniskaryatulis", jeniskaryatulisRoutes);
 router.use("/tingkatpendidikan", tingkatpendidikanRoutes);
 router.use("/prodi", programstudiRoutes);
 router.use("/jurusan", jurusanRoutes);

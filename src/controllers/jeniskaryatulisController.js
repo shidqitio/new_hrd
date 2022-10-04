@@ -1,152 +1,124 @@
 const JenisKaryaTulis = require('../models/jenisKaryaTulisan');
+const { generateKode } = require('../helper/generatekode2')
 
 exports.index = (req, res, next) => {
     JenisKaryaTulis.findAll()
-    .then((kartul) => {
-        res.json({
-            status : "Success", 
-            message : "Berhasil Menampilkan Data", 
-            data : kartul,
+        .then((kartul) => {
+            res.json({
+                status: "Success",
+                message: "Berhasil Menampilkan Data",
+                data: kartul,
+            });
+        })
+        .catch((err) => {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
         });
-    })
-    .catch((err) => {
-        if(!err.statusCode) {
-            err.statusCode = 500;
-        }
-         next(err);
-    });
 };
 
 exports.store = (req, res, next) => {
     JenisKaryaTulis.max("kode_jenis_karya_tulis")
-    .then((kode) => {
-        let kode_jenis_karya_tulis = "00";
+        .then((kode) => {
+            let kode_jenis_karya_tulis = generateKode(kode)
 
-        if(kode !== null) {
-            kode_jenis_karya_tulis = kode;
-        }
-
-        let kode1 = parseInt(kode_jenis_karya_tulis.charAt(0));
-        let kode2 = parseInt(kode_jenis_karya_tulis.charAt(1));
-
-        if(kode1 > 0) {
-            if(kode2 == 9) {
-                kode1 = parseInt(kode1) + 1;
-                kode2 = 0 ;
-                kode_jenis_karya_tulis = kode1.toString() + kode2.toString();
+            return JenisKaryaTulis.create({
+                kode_jenis_karya_tulis: kode_jenis_karya_tulis,
+                nama_jenis_karya_tulis: req.body.nama_jenis_karya_tulis,
+                ucr: req.user,
+            });
+        })
+        .then((kartul) => {
+            res.json({
+                status: "Success",
+                message: "Berhasil Menyimpan Data",
+                data: kartul,
+            });
+        })
+        .catch((err) => {
+            console.log(err)
+            if (!err.statusCode) {
+                err.statusCode = 500;
             }
-        }
-
-        if(kode1 === 0) {
-            if(kode2 === 9) {
-                kode1 = parseInt(kode1) + 1;
-                kode2 = 0;
-                kode_jenis_karya_tulis = kode1.toString() + kode2.toString();
-            }
-            else{
-                kode_jenis_karya_tulis = kode1.toString() + String(parseInt(kode2) + 1);
-            }
-        }
-
-        if(kode === null) {
-            kode_jenis_karya_tulis = "00";
-        }
-
-        return JenisKaryaTulis.create({
-            kode_jenis_karya_tulis : kode_jenis_karya_tulis, 
-            nama_jenis_karya_tulis : req.body.nama_jenis_karya_tulis, 
-            ucr : req.user,
+            next(err);
         });
-    })
-    .then((kartul) => {
-        res.json({
-            status : "Success", 
-            message : "Berhasil Menyimpan Data", 
-            data : kartul,
-        });
-    })
-    .catch((err) => {
-        if(!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
-    });
 };
 
 exports.show = (req, res, next) => {
-    JenisKaryaTulis.findOne({where : {kode_jenis_karya_tulis : req.params.kode_jenis_karya_tulis}})
-    .then((kartul) => {
-        if(!kartul){
-            const error = new Error("Kode Jenis Karya Tulis Tidak Ada");
-            error.statusCode = 422;
-            throw error;
-        }
-        res.json({
-            status : "Success", 
-            message : "Berhasil Menampilkan Data", 
-            data : kartul,
+    JenisKaryaTulis.findOne({ where: { kode_jenis_karya_tulis: req.params.kode_jenis_karya_tulis } })
+        .then((kartul) => {
+            if (!kartul) {
+                const error = new Error("Kode Jenis Karya Tulis Tidak Ada");
+                error.statusCode = 422;
+                throw error;
+            }
+            res.json({
+                status: "Success",
+                message: "Berhasil Menampilkan Data",
+                data: kartul,
+            });
+        })
+        .catch((err) => {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
         });
-    })
-    .catch((err) => {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-          }
-          next(err);
-    });
-}; 
+};
 
 exports.update = (req, res, next) => {
     const data = {
-        kode_jenis_karya_tulis : req.params.kode_jenis_karya_tulis,
-        nama_jenis_karya_tulis : req.body.nama_jenis_karya_tulis
+        kode_jenis_karya_tulis: req.params.kode_jenis_karya_tulis,
+        nama_jenis_karya_tulis: req.body.nama_jenis_karya_tulis
     }
-    JenisKaryaTulis.findOne({ where : {kode_jenis_karya_tulis : req.params.kode_jenis_karya_tulis}})
-    .then((kartul) => {
-        if(!kartul) { 
-            const error = new Error("Kode Jenis Karya Tulis Tidak Ada");
-            error.statusCode = 422; 
-            throw error;
-        }
-        return JenisKaryaTulis.update(data, {where : {kode_jenis_karya_tulis : req.params.kode_jenis_karya_tulis}})
-    })
-    .then((up) => {
-        res.json({
-            status : "Success", 
-            message : "Berhasil Memperbarui Data", 
-            data : data,
+    JenisKaryaTulis.findOne({ where: { kode_jenis_karya_tulis: req.params.kode_jenis_karya_tulis } })
+        .then((kartul) => {
+            if (!kartul) {
+                const error = new Error("Kode Jenis Karya Tulis Tidak Ada");
+                error.statusCode = 422;
+                throw error;
+            }
+            return JenisKaryaTulis.update(data, { where: { kode_jenis_karya_tulis: req.params.kode_jenis_karya_tulis } })
+        })
+        .then((up) => {
+            res.json({
+                status: "Success",
+                message: "Berhasil Memperbarui Data",
+                data: data,
+            });
+        })
+        .catch((err) => {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
         });
-    })
-    .catch((err) => {
-        if(!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
-    });
 };
 
-exports.destroy = (req, res, next) => { 
-    JenisKaryaTulis.findOne({where : {kode_jenis_karya_tulis : req.params.kode_jenis_karya_tulis}})
-    .then((app) => {
-        if(!app){
-            const error = new Error ("Kode Jenis Karya Tulis Tidak Ada");
-            error.statusCode = 422; 
-            throw error;
-        }
-        return JenisKaryaTulis.destroy({
-            where: {kode_jenis_karya_tulis : req.params.kode_jenis_karya_tulis}
+exports.destroy = (req, res, next) => {
+    JenisKaryaTulis.findOne({ where: { kode_jenis_karya_tulis: req.params.kode_jenis_karya_tulis } })
+        .then((app) => {
+            if (!app) {
+                const error = new Error("Kode Jenis Karya Tulis Tidak Ada");
+                error.statusCode = 422;
+                throw error;
+            }
+            return JenisKaryaTulis.destroy({
+                where: { kode_jenis_karya_tulis: req.params.kode_jenis_karya_tulis }
+            });
+        })
+        .then((response) => {
+            res.json({
+                status: "success",
+                message: "Berhasil Menghapus Data",
+                data: response
+            });
+        })
+        .catch((err) => {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
         });
-    })
-    .then((response) => {
-        res.json({
-            status : "success", 
-            message : "Berhasil Menghapus Data", 
-            data : response
-        });
-    })
-    .catch((err) => {
-        if(!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
-    });
 };
